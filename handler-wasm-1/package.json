@@ -1,0 +1,22 @@
+{
+  "name": "handler-wasm",
+  "version": "1.0.0",
+  "main": "t1.js",
+  "scripts": {
+    "dev": "npm run build:dist && node dist/index.js",
+    "build:dist": "cp -p src/index.js dist && npm run build:dist-wasm",
+    "build:dist-wasm": "cp -p pkg/*.wasm dist && cp -p pkg/*.js dist",
+    "build:wasm": "wasm-pack build --target nodejs",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "description": "",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.5"
+  }
+}

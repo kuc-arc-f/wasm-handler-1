@@ -13,8 +13,11 @@ Rust WASM , Express handler function
 
 
 ***
-### setup
-
+### require
+* rustc 1.87.0
+* cargo 1.87.0
+* wasm-pack
+* node 20
 
 ***
 ### Blog

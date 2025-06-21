@@ -22,5 +22,7 @@ Rust WASM , Express handler function
 ***
 ### Blog
 
+https://zenn.dev/knaka0209/scraps/81fd11e86bbb13
+
 ***
 

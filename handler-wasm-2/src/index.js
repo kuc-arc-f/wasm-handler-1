@@ -19,7 +19,7 @@ app.get('/*', (req, res) => {
   const message = wasm.get_handler(req.path);
   console.log("message=", message);
   //const obj = JSON.parse(message);
-  //console.log(obj);
+  //console.log(obj); 
   res.send(message);
 });
 

@@ -30,5 +30,7 @@ SPREADSHEET_ID_1=""
 ***
 ### Blog
 
+https://zenn.dev/link/comments/c3a318d31c9a17
+
 ***
 

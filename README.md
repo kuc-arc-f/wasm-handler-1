@@ -5,7 +5,7 @@
 
  date    : 2025/06/20
 
- update : 2025/06/22 
+ update : 2025/07/10 
 
 ***
 
@@ -18,6 +18,10 @@ Rust WASM , Express handler function
 * cargo 1.87.0
 * wasm-pack
 * node 20
+
+***
+### example
+* wasm-6 : React + Rust WASM 
 
 ***
 ### Blog

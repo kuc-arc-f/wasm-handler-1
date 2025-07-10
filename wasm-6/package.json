@@ -1,0 +1,33 @@
+{
+  "name": "handler-wasm",
+  "version": "1.0.0",
+  "main": "t1.js",
+  "scripts": {
+    "dev": "nodemon",
+    "dev:test": "npm run build && node dist/index.js",
+    "build": "npm run build:wasm && npm run build:server && npm run build:client && npm run build:dist-wasm",
+    "build:server": "npx esbuild --bundle --platform=node src-ts/index.tsx  --outfile=./dist/index.js",
+    "build:client": "npx esbuild --bundle src-ts/client.tsx --minify --outfile=./public/static/client.js",
+    "build:dist": "cp -p src-ts/index.jsx dist && npm run build:dist-wasm",
+    "build:dist-wasm": "cp -p pkg/*.wasm dist && cp -p pkg/*.js dist",
+    "build:wasm": "wasm-pack build --target nodejs",
+    "start": "node dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "description": "",
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "express": "^4.18.2",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "esbuild": "^0.25.5",
+    "nodemon": "^3.1.10"
+  }
+}

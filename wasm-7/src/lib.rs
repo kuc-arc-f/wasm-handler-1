@@ -1,8 +1,11 @@
 use wasm_bindgen::prelude::*;
 use wasm_bindgen_futures::{future_to_promise, spawn_local};
 use serde::{Serialize, Deserialize};
+use reqwest::Error;
+use serde_json::json;
+use serde_json::Value;
+
 //use js_sys::Promise;
-//use reqwest::Error;
 //use std::collections::HashMap;
 
 #[derive(Serialize, Deserialize)]
@@ -36,6 +39,118 @@ pub fn greet(name: &str) -> String {
 pub fn hoge(name: &str) -> String {
     println!("path= {}", name);
     format!("hoge= {}!", name)
+}
+
+
+/**
+*
+* @param
+*
+* @return
+*/
+#[wasm_bindgen]
+pub async fn get_external_api(url: String) -> String {
+  println!("url={}", url );
+
+  let client = reqwest::Client::new();
+
+  // GETリクエストを送信
+  let response = client.get(url).send().await;
+  //println!("response: {:?}", response);
+  // HTTPステータスコードを取得
+  match response {
+    Ok(resp) => {
+      let status = resp.status();
+      println!("HTTP Status: {}", status.to_string());
+      if status.is_success() {
+        println!("Request was successful!");
+        let body = resp.text().await.unwrap();
+        println!("Response.body: {}", body);
+        let payload = json!({
+          "status": 200,
+          "body": &body.to_string()
+        });
+        //println!("payload: {}", payload);
+        return payload.to_string();
+      } else if status.is_client_error() {
+        println!("Client error occurred!");
+        let body = resp.text().await.unwrap();
+        let payload = json!({
+          "status": 400,
+          "body": &body.to_string()
+        });
+        return payload.to_string();
+      } else if status.is_server_error() {
+        println!("Server error occurred!");
+        let body = resp.text().await.unwrap();
+        let payload = json!({
+          "status": 500,
+          "body": &body.to_string()
+        });
+        return payload.to_string();
+      }
+    }
+    Err(err) => {
+        eprintln!("Request failed: {}", err);
+    }
+  }
+  return "".to_string();
+}
+
+#[wasm_bindgen]
+pub async fn post_external_api(url: String, data: String) -> String {
+  let client = reqwest::Client::new();
+
+  // JSON文字列をValue型にデコード
+  let value: Value = serde_json::from_str(&data).expect("REASON");
+  println!("url={}", url );
+
+  // POSTリクエストを送信
+  let response: Result<reqwest::Response, Error> = client.post(url)
+      .json(&value)
+      .send()
+      .await;
+  // ステータスコードを取得
+  //println!("Response: {}", body);
+  //println!("response: {:?}", response);
+  match response {
+    Ok(resp) => {
+        let status = resp.status();
+        println!("HTTP Status: {}", status.to_string());
+
+        if status.is_success() {
+            println!("Request was successful!");
+            let body = resp.text().await.unwrap();
+            //println!("Response.body: {}", body);
+            let payload = json!({
+              "status": 200,
+              "body": &body.to_string()
+            });
+            //println!("payload: {}", payload);
+            return payload.to_string();
+        } else if status.is_client_error() {
+            println!("Client error occurred!");
+            let body = resp.text().await.unwrap();
+            let payload = json!({
+              "status": 400,
+              "body": &body.to_string()
+            });
+            return payload.to_string();
+        } else if status.is_server_error() {
+            println!("Server error occurred!");
+            let body = resp.text().await.unwrap();
+            let payload = json!({
+              "status": 500,
+              "body": &body.to_string()
+            });
+            return payload.to_string();
+        }
+    }
+    Err(err) => {
+        eprintln!("Request failed: {}", err);
+    }
+  }
+  return "".to_string();
 }
 
 /**

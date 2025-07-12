@@ -19,10 +19,18 @@ app.post('/api/get_send', async (req, res) => {
     console.log("path=", req.path);
     const body = req.body;
     console.log(body)
-    //const url = process.env.EXTERNAL_API_URL + "/api/todo11";
     const url = process.env.EXTERNAL_API_URL + body.external_api_path;
     console.log("url=", url);
     const message = await wasm.get_external_api(url);
+    const obj = JSON.parse(message)
+    //console.log(obj);
+    if(typeof obj === "object"){
+      const dataObj = JSON.parse(obj.body);
+      if(obj.status !== 200){
+        throw new Error("response error");
+      }
+      return res.json({ret: 200, data: dataObj});
+    }
     res.send({ message });
   }catch(e){
     console.error(e);
@@ -30,7 +38,7 @@ app.post('/api/get_send', async (req, res) => {
   }
 });
 
-app.post('/api/get_post', async (req, res) => {
+app.post('/api/post_send', async (req, res) => {
   try{  
     console.log("path=", req.path);
     const body = req.body;
@@ -39,13 +47,17 @@ app.post('/api/get_post', async (req, res) => {
     console.log("url=", url);
     const sendBody = JSON.stringify(body);
     const message = await wasm.post_external_api(url, sendBody);
-
-    /*
-    data: JSON.stringify(postData)
-    external_api_path
-    const message = await wasm.post_external_api(url);
-    res.send({ message });
-    */
+    console.log(message)
+    const obj = JSON.parse(message)
+    console.log(obj);
+    if(typeof obj === "object"){
+      const dataObj = JSON.parse(obj.body);
+      console.log(dataObj);
+      if(obj.status !== 200){
+        throw new Error("response error");
+      }
+      return res.json({ret: 200, data: dataObj});
+    }
     res.json({message});
   }catch(e){
     console.error(e);

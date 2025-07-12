@@ -47,10 +47,16 @@ app.post('/api/post_send', async (req, res) => {
     console.log("url=", url);
     const sendBody = JSON.stringify(body);
     const message = await wasm.post_external_api(url, sendBody);
-    console.log(message)
     const obj = JSON.parse(message)
-    console.log(obj);
+    //console.log(obj);
     if(typeof obj === "object"){
+      if(!obj.body){
+        if(obj.status !== 200){
+          throw new Error("body = null");
+        }else{
+          return res.json({ret: 200, data: null });
+        }
+      }
       const dataObj = JSON.parse(obj.body);
       console.log(dataObj);
       if(obj.status !== 200){

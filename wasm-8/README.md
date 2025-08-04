@@ -11,6 +11,13 @@
 React + Rust wasm + Google ADK
 
 ***
+### require
+* rustc 1.87.0
+* cargo 1.87.0
+* wasm-pack
+* node 20
+
+***
 ### setup
 * .env
 * Agent Development Kit , URL
@@ -18,6 +25,15 @@ React + Rust wasm + Google ADK
 ```
 ADK_API_URL="http://localhost:8000"
 ```
+
+***
+
+* build
+```
+cargo install wasm-pack
+npm run build
+``` 
+
 ***
 * dev-start
 

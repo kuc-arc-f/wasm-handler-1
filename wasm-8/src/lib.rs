@@ -176,7 +176,7 @@ pub fn get_handler(pathname: String, apikey: String, sheet_id: String) -> js_sys
             return Ok(JsValue::from_str(&ret))
         }
         if pathname == "/get_sheet_list" {
-            println!("get_sheet_list_handler.path= {}", pathname);
+            println!("get_sheet_list.path= {}", pathname);
             let urlparam3 = "/values/シート1!A1:C100?key=";
             let urlparam4 = apikey;
             let url = format!("{}{}{}{}", "https://sheets.googleapis.com/v4/spreadsheets/", sheet_id, urlparam3, urlparam4);
